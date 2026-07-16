@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ระบบจัดการการลาออนไลน์ (Leave Management System) สำหรับพนักงาน ผู้จัดการ และฝ่ายทรัพยากรบุคคล">
+    <title>ระบบจัดการการลาออนไลน์ | Leave Management System</title>
+    
+    <!-- Google Fonts: Outfit & Sarabun (for Thai and English readability) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Notification Toast -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- ========================================== -->
+    <!-- LANDING VIEW                               -->
+    <!-- ========================================== -->
+    <section id="view-landing" class="view active">
+        <header class="navbar">
+            <div class="logo-container">
+                <i data-lucide="calendar-check-2" class="logo-icon"></i>
+                <span class="logo-text">LeaveSystem</span>
+            </div>
+            <nav class="nav-links">
+                <button class="btn btn-secondary" onclick="navigateTo('login')">เข้าสู่ระบบ</button>
+                <button class="btn btn-primary" onclick="navigateTo('register')">สมัครสมาชิก</button>
+            </nav>
+        </header>
+
+        <main class="landing-main">
+            <!-- Hero Section -->
+            <section class="hero">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <i data-lucide="sparkles" class="badge-icon"></i>
+                        <span>Smart & Simple Leave System</span>
+                    </div>
+                    <h1>ระบบจัดการการลาออนไลน์</h1>
+                    <p class="hero-subtitle">จัดการการลางานของทีมได้อย่างมีประสิทธิภาพ ด้วยระบบที่ทันสมัยและใช้งานง่าย สำหรับพนักงาน ผู้จัดการ และฝ่ายทรัพยากรบุคคล</p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary btn-lg" onclick="navigateTo('login')">
+                            <span>เริ่มใช้งานระบบ</span>
+                            <i data-lucide="arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="hero-card-decoration">
+                        <i data-lucide="calendar" class="calendar-deco-icon"></i>
+                        <span class="deco-title">ยื่นลางานด่วน</span>
+                        <div class="deco-dots">
+                            <span></span><span></span><span></span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section class="features-section">
+                <h2 class="section-title">ฟีเจอร์หลักของระบบ</h2>
+                <p class="section-subtitle">ครบครันทุกฟังก์ชันที่ต้องการสำหรับการจัดการการลา</p>
+                <div class="features-grid">
+                    <!-- Employee Feature Card -->
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper employee-theme">
+                            <i data-lucide="calendar-days"></i>
+                        </div>
+                        <h3>สำหรับพนักงาน</h3>
+                        <ul>
+                            <li><i data-lucide="check-circle" class="li-check"></i> ยื่นใบลาออนไลน์ (เต็มวัน / ครึ่งวัน)</li>
+                            <li><i data-lucide="check-circle" class="li-check"></i> แนบหลักฐานใบรับรองแพทย์</li>
+                            <li><i data-lucide="check-circle" class="li-check"></i> ยกเลิกคำขอลางานด้วยตนเอง</li>
+                            <li><i data-lucide="check-circle" class="li-check"></i> ตรวจสอบวันลาคงเหลือเชิงลึก</li>
+                        </ul>
+                    </div>
+                    <!-- Manager Feature Card -->
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper manager-theme">
+                            <i data-lucide="users"></i>
+                        </div>
+                        <h3>สำหรับผู้จัดการ</h3>
+                        <ul>
+                            <li><i data-lucide="check-circle" class="li-check"></i> อนุมัติ / ปฏิเสธใบลาผ่านระบบ 2 ขั้น</li>
+                            <li><i data-lucide="check-circle" class="li-check"></i> ปฏิทินแสดงการลางานของทีม</li>
+                            <li><i data-lucide="check-circle" class="li-check"></i> รายงานสถิติการลาในแผนก</li>
+                            <li><i data-lucide="check-circle" class="li-check"></i> ระบบยืนยันตัวตนและความปลอดภัย</li>
+                        </ul>
+                    </div>
+                    <!-- HR Feature Card -->
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper hr-theme">
+                            <i data-lucide="bar-chart-3"></i>
+                        </div>
+                        <h3>สำหรับ HR</h3>
+                        <ul>
+                            <li><i data-lucide="check-circle" class="li-check"></i> รายงานสถิติแยกตามเดือน/แผนก</li>
+                            <li><i data-lucide="check-circle" class="li-check"></i> ปรับแก้สิทธิ์วันลาเฉพาะบุคคล</li>
+                            <li><i data-lucide="check-circle" class="li-check"></i> ส่งอนุมัติขั้นสุดท้ายระบบ 2 ขั้น</li>
+                            <li><i data-lucide="check-circle" class="li-check"></i> ส่งออกข้อมูลเป็น Excel/CSV</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Why Choose Us -->
+            <section class="why-us">
+                <h2 class="section-title">ทำไมต้องเลือกระบบของเรา?</h2>
+                <div class="why-us-content">
+                    <div class="why-us-list">
+                        <div class="why-us-item">
+                            <div class="why-us-icon"><i data-lucide="shield-check"></i></div>
+                            <div class="why-us-text">
+                                <h4>ปลอดภัยและเชื่อถือได้</h4>
+                                <p>ระบบรักษาความปลอดภัยสูง ข้อมูลส่วนตัวและการลาทั้งหมดของคุณได้รับการคุ้มครองอย่างเต็มที่</p>
+                            </div>
+                        </div>
+                        <div class="why-us-item">
+                            <div class="why-us-icon"><i data-lucide="line-chart"></i></div>
+                            <div class="why-us-text">
+                                <h4>รายงานแบบเรียลไทม์</h4>
+                                <p>ข้อมูลการลาและสถิติอัปเดตแบบเรียลไทม์ ช่วยให้ผู้บริหารและ HR ตัดสินใจได้อย่างถูกต้องแม่นยำ</p>
+                            </div>
+                        </div>
+                        <div class="why-us-item">
+                            <div class="why-us-icon"><i data-lucide="thumbs-up"></i></div>
+                            <div class="why-us-text">
+                                <h4>ใช้งานง่าย เข้าใจเร็ว</h4>
+                                <p>อินเตอร์เฟสออกแบบมาอย่างเป็นมิตร สบายตา ใช้งานง่ายโดยไม่จำเป็นต้องมีความรู้เรื่องเทคนิค</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="why-us-cta">
+                        <h3>พร้อมเริ่มใช้งานหรือยัง?</h3>
+                        <p>เข้าสู่ระบบและเริ่มจัดการการลางานของคุณได้แล้ววันนี้</p>
+                        <button class="btn btn-primary btn-lg" onclick="navigateTo('login')">เริ่มใช้งาน</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- AUTH VIEW (LOGIN / REGISTER)               -->
+    <!-- ========================================== -->
+    <section id="view-login" class="view">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <i data-lucide="lock" class="auth-icon"></i>
+                    <h2>เข้าสู่ระบบ</h2>
+                    <p>ระบบจัดการการลาออนไลน์ (Leave Management System)</p>
+                </div>
+                <form id="form-login" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="login-username">ชื่อผู้ใช้งาน</label>
+                        <div class="input-wrapper">
+                            <i data-lucide="user" class="input-icon"></i>
+                            <input type="text" id="login-username" placeholder="กรอกชื่อผู้ใช้งาน" required autocomplete="username">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">รหัสผ่าน</label>
+                        <div class="input-wrapper">
+                            <i data-lucide="lock" class="input-icon"></i>
+                            <input type="password" id="login-password" placeholder="กรอกรหัสผ่าน" required autocomplete="current-password">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block btn-lg">เข้าสู่ระบบ</button>
+                </form>
+                <div class="auth-footer">
+                    <p>ยังไม่มีบัญชี? <a href="#" onclick="navigateTo('register'); return false;">สมัครสมาชิกใหม่</a></p>
+                    <a href="#" onclick="navigateTo('landing'); return false;" class="back-link"><i data-lucide="arrow-left"></i> กลับหน้าแรก</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="view-register" class="view">
+        <div class="auth-container">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <i data-lucide="user-plus" class="auth-icon"></i>
+                    <h2>สมัครสมาชิก</h2>
+                    <p>สร้างบัญชีใหม่เพื่อเข้าใช้งานระบบ</p>
+                </div>
+                <form id="form-register" onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label for="register-name">ชื่อ - นามสกุล</label>
+                        <div class="input-wrapper">
+                            <i data-lucide="text-cursor-input" class="input-icon"></i>
+                            <input type="text" id="register-name" placeholder="ชื่อภาษาไทย เช่น สมชาย ยินดี" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-username">ชื่อผู้ใช้งาน (Username)</label>
+                        <div class="input-wrapper">
+                            <i data-lucide="user" class="input-icon"></i>
+                            <input type="text" id="register-username" placeholder="ภาษาอังกฤษ เช่น somchai_y" required autocomplete="username">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">รหัสผ่าน</label>
+                        <div class="input-wrapper">
+                            <i data-lucide="lock" class="input-icon"></i>
+                            <input type="password" id="register-password" placeholder="กำหนดรหัสผ่านของคุณ" required autocomplete="new-password">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="register-department">แผนก / ฝ่ายงาน</label>
+                            <div class="input-wrapper">
+                                <i data-lucide="building" class="input-icon"></i>
+                                <select id="register-department" required>
+                                    <option value="" disabled selected>เลือกแผนก</option>
+                                    <option value="IT">IT (เทคโนโลยีสารสนเทศ)</option>
+                                    <option value="HR">HR (ทรัพยากรบุคคล)</option>
+                                    <option value="Marketing">Marketing (การตลาด)</option>
+                                    <option value="Sales">Sales (ฝ่ายขาย)</option>
+                                    <option value="Finance">Finance (การเงินและบัญชี)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-role">บทบาทผู้ใช้งาน</label>
+                            <div class="input-wrapper">
+                                <i data-lucide="shield" class="input-icon"></i>
+                                <select id="register-role" required>
+                                    <option value="employee">พนักงาน (Employee)</option>
+                                    <option value="manager">หัวหน้างาน (Manager)</option>
+                                    <option value="hr">HR / ผู้ดูแลระบบ</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block btn-lg">สมัครสมาชิก</button>
+                </form>
+                <div class="auth-footer">
+                    <p>มีบัญชีอยู่แล้ว? <a href="#" onclick="navigateTo('login'); return false;">เข้าสู่ระบบ</a></p>
+                    <a href="#" onclick="navigateTo('landing'); return false;" class="back-link"><i data-lucide="arrow-left"></i> กลับหน้าแรก</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- MAIN APPLICATION VIEW (DASHBOARD)          -->
+    <!-- ========================================== -->
+    <section id="view-dashboard" class="view">
+        <div class="app-layout">
+            
+            <!-- Sidebar Panel -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <i data-lucide="calendar-check-2" class="side-logo-icon"></i>
+                    <span class="side-logo-text">LeaveSystem</span>
+                </div>
+                
+                <div class="user-profile-badge">
+                    <div class="avatar-circle" id="user-avatar-initial">U</div>
+                    <div class="user-meta">
+                        <span class="user-name" id="profile-name">Samita Arsakati</span>
+                        <span class="user-role" id="profile-role">พนักงาน</span>
+                    </div>
+                </div>
+
+                <nav class="sidebar-nav">
+                    <a href="#" class="nav-item active" id="nav-home" onclick="switchTab('home'); return false;">
+                        <i data-lucide="home"></i>
+                        <span>หน้าหลัก</span>
+                    </a>
+                    <a href="#" class="nav-item" id="nav-submit" onclick="switchTab('submit'); return false;">
+                        <i data-lucide="file-plus"></i>
+                        <span>ยื่นใบลา</span>
+                    </a>
+                    <a href="#" class="nav-item" id="nav-history" onclick="switchTab('history'); return false;">
+                        <i data-lucide="history"></i>
+                        <span>ประวัติการลา</span>
+                    </a>
+                    <!-- Calendar Nav Tab (All roles can access) -->
+                    <a href="#" class="nav-item" id="nav-calendar" onclick="switchTab('calendar'); return false;">
+                        <i data-lucide="calendar-range"></i>
+                        <span>ปฏิทินการลาของทีม</span>
+                    </a>
+                    <!-- Manager & HR specific tabs -->
+                    <a href="#" class="nav-item" id="nav-manager" onclick="switchTab('manager'); return false;" style="display: none;">
+                        <i data-lucide="check-square"></i>
+                        <span>อนุมัติใบลา</span>
+                        <span class="badge badge-danger" id="pending-badge-count" style="display: none;">0</span>
+                    </a>
+                    <a href="#" class="nav-item" id="nav-hr" onclick="switchTab('hr'); return false;" style="display: none;">
+                        <i data-lucide="pie-chart"></i>
+                        <span>แดชบอร์ดสรุปการลา</span>
+                    </a>
+                </nav>
+
+                <div class="sidebar-footer">
+                    <a href="#" class="nav-item logout-link" onclick="handleLogout(); return false;">
+                        <i data-lucide="log-out"></i>
+                        <span>ออกจากระบบ</span>
+                    </a>
+                </div>
+            </aside>
+
+            <!-- Main Content Panel -->
+            <main class="main-content">
+                
+                <!-- Top Navbar -->
+                <header class="top-bar">
+                    <div class="tab-title-container">
+                        <h2 id="current-tab-title">แดชบอร์ด</h2>
+                        <p class="tab-subtitle" id="current-tab-subtitle">ภาพรวมการลาของคุณ</p>
+                    </div>
+                    <div class="top-bar-actions">
+                        <div class="notification-bell" onclick="toggleNotifications()">
+                            <i data-lucide="bell"></i>
+                            <span class="bell-badge" id="notification-count">0</span>
+                            <div class="notification-dropdown" id="notification-dropdown">
+                                <div class="dropdown-header">การแจ้งเตือน</div>
+                                <div class="dropdown-content" id="notification-list">
+                                    <div class="empty-noti">ไม่มีการแจ้งเตือนในขณะนี้</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- TAB: HOME -->
+                <div id="tab-home" class="dashboard-tab active">
+                    <!-- Leaves Entitlements Grid -->
+                    <div class="stats-grid">
+                        <div class="stat-card flex-between">
+                            <div class="stat-info">
+                                <span class="stat-label">วันลาคงเหลือ (รวม)</span>
+                                <span class="stat-value text-primary" id="stat-total-remaining">20</span>
+                                <span class="stat-unit">วัน</span>
+                            </div>
+                            <div class="stat-icon-bg bg-primary-light">
+                                <i data-lucide="calendar"></i>
+                            </div>
+                        </div>
+                        <div class="stat-card flex-between">
+                            <div class="stat-info">
+                                <span class="stat-label">วันที่ใช้ไปแล้ว</span>
+                                <span class="stat-value text-success" id="stat-total-used">0</span>
+                                <span class="stat-unit">วัน</span>
+                            </div>
+                            <div class="stat-icon-bg bg-success-light">
+                                <i data-lucide="calendar-check"></i>
+                            </div>
+                        </div>
+                        <div class="stat-card flex-between">
+                            <div class="stat-info">
+                                <span class="stat-label">รอการอนุมัติ</span>
+                                <span class="stat-value text-warning" id="stat-total-pending">0</span>
+                                <span class="stat-unit">รายการ</span>
+                            </div>
+                            <div class="stat-icon-bg bg-warning-light">
+                                <i data-lucide="clock"></i>
+                            </div>
+                        </div>
+                        <div class="stat-card flex-between">
+                            <div class="stat-info">
+                                <span class="stat-label">ลาป่วย (ปีนี้)</span>
+                                <span class="stat-value text-danger" id="stat-sick-used">0</span>
+                                <span class="stat-unit">วัน / 30 วัน</span>
+                            </div>
+                            <div class="stat-icon-bg bg-danger-light">
+                                <i data-lucide="activity"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Split layout: Quick request + Recent leaves -->
+                    <div class="split-layout">
+                        <!-- Column Left: Quick Leave Form -->
+                        <div class="layout-card">
+                            <div class="card-header">
+                                <h3 class="card-title"><i data-lucide="pencil-line"></i> ยื่นใบลาด่วน</h3>
+                            </div>
+                            <form id="form-quick-leave" onsubmit="handleLeaveSubmit(event, 'quick')">
+                                <div class="form-group">
+                                    <label for="quick-leave-type">ประเภทการลา</label>
+                                    <select id="quick-leave-type" required>
+                                        <option value="" disabled selected>เลือกประเภทการลา</option>
+                                        <option value="sick">ลาป่วย (Sick Leave)</option>
+                                        <option value="personal">ลากิจ (Personal Leave)</option>
+                                        <option value="vacation">ลาพักร้อน (Vacation Leave)</option>
+                                    </select>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="quick-leave-period">ช่วงเวลาการลา</label>
+                                        <select id="quick-leave-period" required onchange="toggleDateLock('quick')">
+                                            <option value="full">เต็มวัน</option>
+                                            <option value="morning">ครึ่งวันเช้า (08:30 - 12:30)</option>
+                                            <option value="afternoon">ครึ่งวันบ่าย (13:30 - 17:30)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="quick-start-date">วันที่เริ่มต้น</label>
+                                        <input type="date" id="quick-start-date" required onchange="matchEndDate('quick')">
+                                    </div>
+                                </div>
+                                <div class="form-row" id="quick-end-date-container">
+                                    <div class="form-group" style="grid-column: span 2;">
+                                        <label for="quick-end-date">วันที่สิ้นสุด</label>
+                                        <input type="date" id="quick-end-date" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="quick-attachment">ไฟล์แนบ / ใบรับรองแพทย์ (ถ้ามี)</label>
+                                    <input type="file" id="quick-attachment" class="file-input" accept="image/*,application/pdf">
+                                </div>
+                                <div class="form-group">
+                                    <label for="quick-reason">เหตุผลการลา</label>
+                                    <textarea id="quick-reason" rows="2" placeholder="กรอกเหตุผลการลา..." required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block">ยื่นใบลา</button>
+                            </form>
+                        </div>
+
+                        <!-- Column Right: Recent Leaves -->
+                        <div class="layout-card">
+                            <div class="card-header flex-between">
+                                <h3 class="card-title"><i data-lucide="clipboard-list"></i> ใบลาล่าสุด</h3>
+                                <a href="#" class="view-all-link" onclick="switchTab('history'); return false;">ดูทั้งหมด</a>
+                            </div>
+                            <div class="table-container" style="max-height: 480px; overflow-y: auto;">
+                                <table class="data-table" id="table-recent-leaves">
+                                    <thead>
+                                        <tr>
+                                            <th>ประเภท</th>
+                                            <th>วันที่ลา</th>
+                                            <th>จำนวนวัน</th>
+                                            <th>สถานะ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="4" class="text-center py-4 text-muted">
+                                                <div class="empty-state">
+                                                    <i data-lucide="clock" class="empty-icon"></i>
+                                                    <p>ยังไม่มีใบลา<br>เมื่อคุณยื่นใบลา จะแสดงในส่วนนี้</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB: SUBMIT LEAVE (FULL FORM) -->
+                <div id="tab-submit" class="dashboard-tab">
+                    <div class="layout-card max-width-md mx-auto">
+                        <div class="card-header text-center">
+                            <h3 class="card-title">แบบฟอร์มคำขออนุมัติลางาน</h3>
+                            <p class="card-subtitle">กรุณากรอกข้อมูลการลาและเหตุผลให้ถูกต้องตามกฎระเบียบบริษัท</p>
+                        </div>
+                        
+                        <!-- Leave Entitlements Summary inside form -->
+                        <div class="entitlements-mini-cards">
+                            <div class="mini-card">
+                                <span class="mini-title">ลาป่วยคงเหลือ</span>
+                                <span class="mini-value text-danger" id="mini-sick-remaining">30 วัน</span>
+                            </div>
+                            <div class="mini-card">
+                                <span class="mini-title">ลากิจคงเหลือ</span>
+                                <span class="mini-value text-warning" id="mini-personal-remaining">6 วัน</span>
+                            </div>
+                            <div class="mini-card">
+                                <span class="mini-title">ลาพักร้อนคงเหลือ</span>
+                                <span class="mini-value text-primary" id="mini-vacation-remaining">10 วัน</span>
+                            </div>
+                        </div>
+
+                        <form id="form-full-leave" onsubmit="handleLeaveSubmit(event, 'full')">
+                            <div class="form-group">
+                                <label for="full-leave-type">ประเภทการลางาน</label>
+                                <select id="full-leave-type" required>
+                                    <option value="" disabled selected>เลือกประเภทการลา</option>
+                                    <option value="sick">ลาป่วย (รักษาพยาบาล/ใบรับรองแพทย์)</option>
+                                    <option value="personal">ลากิจ (ทำธุระส่วนตัว/งานรัฐพิธี)</option>
+                                    <option value="vacation">ลาพักร้อน (พักผ่อนประจำปี)</option>
+                                </select>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="full-leave-period">ช่วงเวลาการลา</label>
+                                    <select id="full-leave-period" required onchange="toggleDateLock('full')">
+                                        <option value="full">เต็มวัน</option>
+                                        <option value="morning">ครึ่งวันเช้า (08:30 - 12:30)</option>
+                                        <option value="afternoon">ครึ่งวันบ่าย (13:30 - 17:30)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="full-start-date">ตั้งแต่วันที่</label>
+                                    <input type="date" id="full-start-date" required onchange="matchEndDate('full')">
+                                </div>
+                            </div>
+                            <div class="form-row" id="full-end-date-container">
+                                <div class="form-group" style="grid-column: span 2;">
+                                    <label for="full-end-date">ถึงวันที่</label>
+                                    <input type="date" id="full-end-date" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="full-attachment">แนบเอกสารหลักฐาน / ใบรับรองแพทย์ (รูปภาพ หรือ PDF)</label>
+                                <input type="file" id="full-attachment" class="file-input" accept="image/*,application/pdf">
+                                <span class="help-text text-danger" style="font-size: 0.8rem; margin-top: 0.25rem; display: none;" id="attachment-warning">* ลาป่วยตั้งแต่ 3 วันขึ้นไป จำเป็นต้องอัปโหลดใบรับรองแพทย์</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="full-reason">เหตุผลประกอบการลาอย่างละเอียด</label>
+                                <textarea id="full-reason" rows="3" placeholder="ระบุเหตุผลและรายละเอียดเพิ่มเติมสำหรับการพิจารณาอนุมัติ..." required></textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button type="reset" class="btn btn-secondary">ล้างข้อมูล</button>
+                                <button type="submit" class="btn btn-primary">ส่งคำขอลางาน</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- TAB: LEAVE HISTORY -->
+                <div id="tab-history" class="dashboard-tab">
+                    <div class="layout-card">
+                        <div class="card-header flex-between flex-wrap gap-2">
+                            <h3 class="card-title">ประวัติการขออนุมัติลางานทั้งหมด</h3>
+                            <div class="filters">
+                                <select id="filter-type" onchange="filterLeaveHistory()">
+                                    <option value="all">ทุกประเภทการลา</option>
+                                    <option value="sick">ลาป่วย</option>
+                                    <option value="personal">ลากิจ</option>
+                                    <option value="vacation">ลาพักร้อน</option>
+                                </select>
+                                <select id="filter-status" onchange="filterLeaveHistory()">
+                                    <option value="all">ทุกสถานะ</option>
+                                    <option value="pending">รอหัวหน้าอนุมัติ</option>
+                                    <option value="pending_hr">รอ HR อนุมัติ</option>
+                                    <option value="approved">อนุมัติแล้ว</option>
+                                    <option value="rejected">ปฏิเสธแล้ว</option>
+                                    <option value="cancelled">ยกเลิกแล้ว</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table" id="table-history-leaves">
+                                <thead>
+                                    <tr>
+                                        <th>วันที่ยื่นใบลา</th>
+                                        <th>ประเภทการลา</th>
+                                        <th>ช่วงเวลา</th>
+                                        <th>วันที่เริ่ม - สิ้นสุด</th>
+                                        <th>จำนวนวัน</th>
+                                        <th>เหตุผล/เอกสารแนบ</th>
+                                        <th>สถานะ</th>
+                                        <th>ผู้ตรวจสอบ/หมายเหตุ</th>
+                                        <th>การจัดการ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- History data dynamically populated -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB: TEAM CALENDAR -->
+                <div id="tab-calendar" class="dashboard-tab">
+                    <div class="layout-card">
+                        <div class="calendar-header-panel">
+                            <button class="btn btn-secondary btn-icon" onclick="changeMonth(-1)">
+                                <i data-lucide="chevron-left"></i>
+                            </button>
+                            <h3 id="calendar-month-year">กรกฎาคม 2026</h3>
+                            <button class="btn btn-secondary btn-icon" onclick="changeMonth(1)">
+                                <i data-lucide="chevron-right"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- Grid Calendar Layout -->
+                        <div class="calendar-grid">
+                            <div class="calendar-weekday">อา.</div>
+                            <div class="calendar-weekday">จ.</div>
+                            <div class="calendar-weekday">อ.</div>
+                            <div class="calendar-weekday">พ.</div>
+                            <div class="calendar-weekday">พฤ.</div>
+                            <div class="calendar-weekday">ศ.</div>
+                            <div class="calendar-weekday">ส.</div>
+                            <!-- Days grid populated dynamically in app.js -->
+                            <div class="calendar-days-container" id="calendar-days"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB: MANAGER APPROVALS -->
+                <div id="tab-manager" class="dashboard-tab">
+                    <div class="layout-card">
+                        <div class="card-header">
+                            <h3 class="card-title">รายการรออนุมัติการลางานของพนักงาน</h3>
+                            <p class="card-subtitle">โปรดพิจารณาและอนุมัติใบลาตามขั้นตอนการอนุมัติ 2 ระดับ (หัวหน้างานอนุมัติ -> HR อนุมัติขั้นสุดท้าย)</p>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table" id="table-pending-leaves">
+                                <thead>
+                                    <tr>
+                                        <th>ชื่อพนักงาน</th>
+                                        <th>แผนก</th>
+                                        <th>ประเภท</th>
+                                        <th>ช่วงเวลา</th>
+                                        <th>วันที่เริ่ม - สิ้นสุด</th>
+                                        <th>จำนวนวัน</th>
+                                        <th>เหตุผล/เอกสาร</th>
+                                        <th>วันที่ยื่นเรื่อง</th>
+                                        <th>สถานะอนุมัติ</th>
+                                        <th>การจัดการ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Dynamic list of pending leaves -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- Department Leave List (Recent actions) -->
+                    <div class="layout-card mt-4">
+                        <div class="card-header">
+                            <h3 class="card-title">ประวัติการดำเนินการทั้งหมดของแผนก</h3>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table" id="table-dept-leaves">
+                                <thead>
+                                    <tr>
+                                        <th>ชื่อพนักงาน</th>
+                                        <th>ประเภท</th>
+                                        <th>ช่วงเวลา</th>
+                                        <th>วันที่เริ่ม - สิ้นสุด</th>
+                                        <th>จำนวนวัน</th>
+                                        <th>สถานะ</th>
+                                        <th>ผู้อนุมัติ</th>
+                                        <th>หมายเหตุ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Dynamic department history -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB: HR DATA VISUALIZATION & REPORTS -->
+                <div id="tab-hr" class="dashboard-tab">
+                    <!-- Aggregate Cards -->
+                    <div class="stats-grid">
+                        <div class="stat-card flex-between">
+                            <div class="stat-info">
+                                <span class="stat-label">ใบลาทั้งหมดในระบบ</span>
+                                <span class="stat-value text-primary" id="hr-stat-total">0</span>
+                                <span class="stat-unit">รายการ</span>
+                            </div>
+                            <div class="stat-icon-bg bg-primary-light">
+                                <i data-lucide="folders"></i>
+                            </div>
+                        </div>
+                        <div class="stat-card flex-between">
+                            <div class="stat-info">
+                                <span class="stat-label">ใบลาที่รออนุมัติ (ทั้งหมด)</span>
+                                <span class="stat-value text-warning" id="hr-stat-pending">0</span>
+                                <span class="stat-unit">รายการ</span>
+                            </div>
+                            <div class="stat-icon-bg bg-warning-light">
+                                <i data-lucide="clock"></i>
+                            </div>
+                        </div>
+                        <div class="stat-card flex-between">
+                            <div class="stat-info">
+                                <span class="stat-label">ใบลาที่อนุมัติแล้ว</span>
+                                <span class="stat-value text-success" id="hr-stat-approved">0</span>
+                                <span class="stat-unit">รายการ</span>
+                            </div>
+                            <div class="stat-icon-bg bg-success-light">
+                                <i data-lucide="check-circle-2"></i>
+                            </div>
+                        </div>
+                        <div class="stat-card flex-between">
+                            <div class="stat-info">
+                                <span class="stat-label">ส่งออกข้อมูลรายงาน</span>
+                                <button class="btn btn-success btn-block mt-2 flex-center gap-1" onclick="exportReportToExcel()">
+                                    <i data-lucide="download"></i>
+                                    <span>Export Excel (CSV)</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Grid -->
+                    <div class="split-layout">
+                        <!-- Monthly Trend Chart -->
+                        <div class="layout-card">
+                            <div class="card-header">
+                                <h3 class="card-title">สถิติวันลาสะสมแยกตามรายเดือน (ปีปัจจุบัน)</h3>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="chart-monthly-trend"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Department Breakdown Chart -->
+                        <div class="layout-card">
+                            <div class="card-header">
+                                <h3 class="card-title">สัดส่วนวันลารวมแยกตามแผนก</h3>
+                            </div>
+                            <div class="chart-wrapper">
+                                <canvas id="chart-dept-breakdown"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Employee Leave Statistics List -->
+                    <div class="layout-card mt-4">
+                        <div class="card-header flex-between">
+                            <h3 class="card-title">สถิติจำนวนวันลาและการกำหนดสิทธิ์พนักงาน</h3>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table" id="table-hr-employee-stats">
+                                <thead>
+                                    <tr>
+                                        <th>ชื่อพนักงาน</th>
+                                        <th>แผนก</th>
+                                        <th>ลาป่วยที่ใช้ (คงเหลือ)</th>
+                                        <th>ลากิจที่ใช้ (คงเหลือ)</th>
+                                        <th>ลาพักร้อนที่ใช้ (คงเหลือ)</th>
+                                        <th>การจัดการ</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Dynamic employee stats list -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </section>
+
+    <!-- Reject Modal Dialog -->
+    <div id="reject-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>ระบุเหตุผลการปฏิเสธคำขออนุมัติลา</h3>
+                <span class="close-btn" onclick="closeRejectModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="reject-leave-id">
+                <div class="form-group">
+                    <label for="reject-reason-text">เหตุผลที่ไม่อนุมัติ</label>
+                    <textarea id="reject-reason-text" rows="3" placeholder="กรอกสาเหตุการไม่อนุมัติเพื่อแจ้งพนักงาน..." required></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeRejectModal()">ยกเลิก</button>
+                <button class="btn btn-danger" onclick="submitRejection()">ยืนยันปฏิเสธการลา</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Entitlements Edit Modal -->
+    <div id="entitlements-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>ปรับปรุงข้อกำหนดและสิทธิ์การลางานพนักงาน</h3>
+                <span class="close-btn" onclick="closeEntitlementsModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="entitlements-user-id">
+                <div class="form-group">
+                    <label for="entitlements-user-name">ชื่อพนักงาน</label>
+                    <input type="text" id="entitlements-user-name" readonly style="background-color:#f1f5f9; cursor:not-allowed;">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="entitlements-sick-limit">สิทธิ์ลาป่วยสูงสุด (วัน/ปี)</label>
+                        <input type="number" id="entitlements-sick-limit" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="entitlements-personal-limit">สิทธิ์ลากิจสูงสุด (วัน/ปี)</label>
+                        <input type="number" id="entitlements-personal-limit" min="0" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="entitlements-vacation-limit">สิทธิ์ลาพักร้อนสูงสุด (วัน/ปี)</label>
+                    <input type="number" id="entitlements-vacation-limit" min="0" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeEntitlementsModal()">ยกเลิก</button>
+                <button class="btn btn-primary" onclick="submitEntitlements()">บันทึกสิทธิ์ใหม่</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script Loading -->
+    <script src="app.js"></script>
+</body>
+</html>
